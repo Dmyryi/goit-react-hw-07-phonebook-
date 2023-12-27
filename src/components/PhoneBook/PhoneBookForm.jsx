@@ -22,7 +22,7 @@ export default function PhoneBookForm() {
     setPhone(evt.currentTarget.value);
   };
 
-  const handleSubmit = evt => {
+  const handleSubmit = async evt => {
     evt.preventDefault();
     const normalizedName = name.toLowerCase();
     const isAdded = contacts.find(
@@ -33,8 +33,14 @@ export default function PhoneBookForm() {
       alert(`${name}: is already in contacts`);
       return;
     }
-    dispatch(addContact({ id: nanoid(), name, phone }));
-    reset();
+
+    try {
+      // Assuming addContact is an asynchronous function that fetches data from the backend
+      await dispatch(addContact({ id: nanoid(), name, phone }));
+      reset();
+    } catch (error) {
+      console.error('Error adding contact:', error.message);
+    }
   };
 
   const reset = () => {

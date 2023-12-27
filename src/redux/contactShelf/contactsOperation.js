@@ -13,16 +13,19 @@ export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
   }
 });
 
-export const addContact = createAsyncThunk('contacts/addContact', async () => {
-  try {
-    const contacts = await axios.post('/contacts');
-    // console.log('Contacts from API:', contacts);
-    return contacts.data;
-  } catch (error) {
-    console.error('Error fetching contacts:', error);
-    throw error;
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async contact => {
+    try {
+      const contacts = await axios.post('/contacts', contact);
+      // console.log('Contacts from API:', contacts);
+      return contacts.data;
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
+      throw error;
+    }
   }
-});
+);
 
 export const deleteContacts = createAsyncThunk(
   'contacts/deleteContact',
