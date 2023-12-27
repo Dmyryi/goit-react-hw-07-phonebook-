@@ -6,10 +6,10 @@ import { updateFilter } from '../redux/myContacts/myContacts';
 export default function Filter() {
   const dispatch = useDispatch();
   const filter = useSelector(getFilter) || ''; // Provide a default value if filter is falsy
+
   const changeFilterHandler = event => {
     dispatch(updateFilter(event.currentTarget.value));
   };
-
   return (
     <div>
       <label>

@@ -1,20 +1,17 @@
-export const getContacts = state =>
-  state.myContacts ? state.myContacts.items : [];
+import { createSelector } from 'reselect';
 
-export const getFilter = state =>
-  state.myContacts ? state.myContacts.filter : '';
+export const getMyContactsState = state => state.myContacts || {};
+export const getContacts = state => getMyContactsState(state).items || [];
+export const getFilter = state => getMyContactsState(state).filter || '';
 
-export const getVisibleContacts = state => {
-  const contacts = getContacts(state);
-  const filter = getFilter(state);
-  // Check if filter is defined before converting to lowercase
-  const normalizedFilter = filter ? filter.toLowerCase() : '';
-
-  if (!contacts) {
-    return [];
+export const getVisibleContacts = createSelector(
+  [getContacts, getFilter],
+  (items, filter) => {
+    // Фильтрация контактов
+    const filteredItems = items.filter(item => {
+      const itemName = item.name || '';
+      return itemName.toLowerCase().includes(filter.toLowerCase());
+    });
+    return filteredItems;
   }
-
-  return contacts.filter(contact =>
-    contact.name.toLowerCase().includes(normalizedFilter)
-  );
-};
+);
